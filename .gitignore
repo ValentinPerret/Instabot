@@ -1,0 +1,7 @@
+# https://virtualenvwrapper.readthedocs.io/en/latest/
+# https://realpython.com/python-virtual-environments-a-primer/
+# https://stackoverflow.com/questions/9554087/setting-an-environment-variable-in-virtualenv
+.env
+.DS_Store
+source/*
+!source/readme.md
