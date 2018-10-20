@@ -45,7 +45,7 @@ def login(browser):
 	elem = browser.find_element_by_xpath("//*[contains(text(), 'Log in')]")
 	elem.click()
 
-	browser.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + 'debug_output/login_step.png')
+	browser.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + 'debug/login_step.png')
 
 def getLines(fileName):
 	f = open(fileName)
@@ -171,7 +171,7 @@ def commenting_main_code(source_path,browser_type):
 		browser.quit()
 	except Exception as e:
 		print(e)
-		browser.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + 'debug_output/runfail_screenshot.png')
+		browser.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + 'debug/runfail_screenshot.png')
 		browser.quit()
 
 if __name__ == "__main__":

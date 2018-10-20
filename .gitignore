@@ -3,5 +3,6 @@
 # https://stackoverflow.com/questions/9554087/setting-an-environment-variable-in-virtualenv
 .env
 .DS_Store
+pi_instabot.sh
 source/*
 !source/readme.md
