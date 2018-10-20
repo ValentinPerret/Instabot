@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver import ActionChains
 
 from slackclient import SlackClient
 from datetime import date
@@ -20,6 +21,11 @@ import io
 from contextlib import redirect_stdout
 import sys, traceback
 from pathlib import Path
+
+class Actions(ActionChains):
+    def wait(self, time_s: float):
+        self._actions.append(lambda: time.sleep(time_s))
+        return self
 
 def login(browser):
 	
@@ -66,15 +72,27 @@ def findLastPicture(browser, profileName):
 	print('href is ' + href)
 	browser.get(href)
 
+def get_comment_input(browser):
+	#function used for the new commenting script
+	comment_input = browser.find_elements_by_xpath('//textarea[@placeholder = "Add a comment…"]')
+	if len(comment_input) <= 0:
+		comment_input = browser.find_elements_by_xpath('//input[@placeholder = "Add a comment…"]')
+	return comment_input
+
 def commenting(browser, message = 'Lb'):
-	elem = browser.find_element_by_xpath('//form[@class="X7cDz"]/textarea[1]')
-	actions = webdriver.ActionChains(browser)
-	actions.move_to_element(elem)
-	actions.click(elem)
-	actions.send_keys(message)
-	actions.send_keys(Keys.ENTER)
-	actions.perform()
-	time.sleep(5)
+	# This work on the raspberry pi
+	comment_input = get_comment_input(browser)
+	if len(comment_input) > 0:
+		comment_input[0].clear()
+		comment_input = get_comment_input(browser)
+		browser.execute_script("arguments[0].value = '" + message + " ';", comment_input[0])
+		comment_input[0].send_keys("\b")
+		comment_input = get_comment_input(browser)
+		comment_input[0].submit()
+	else:
+		print('Warning: Comment Action Likely Failed:Comment Element {} not found'.format(comment_input))
+	wait()
+	return 1
 
 def wait():
 	time.sleep(random.uniform(2,5))
