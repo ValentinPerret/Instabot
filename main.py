@@ -153,6 +153,7 @@ def commenting_main_code(source_path,browser_type):
 		browser.quit()
 	except Exception as e:
 		print(e)
+		browser.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + 'debug_output/runfail_screenshot.png')
 		browser.quit()
 
 if __name__ == "__main__":
