@@ -108,7 +108,7 @@ def generate_message(source_path):
 def browser_object(source_path, browser_type = 'chrome_headless'):
 	if browser_type == 'chrome' or browser_type == 'chrome_headless':
 		chrome_options = Options() 
-		chromedriver = source_path + '/chromedriver'
+		chromedriver = os.environ['CHROMEDRIVER_PATH']
 		chrome_options.binary_location = "{}".format(os.environ['CHROME_BINARY_PATH'])
 		if browser_type == 'chrome_headless':
 			chrome_options.add_argument("--headless")
@@ -176,7 +176,7 @@ def commenting_main_code(source_path,browser_type):
 
 if __name__ == "__main__":
 	source_path = os.path.dirname(os.path.realpath(__file__)) +'/source'
-	browser_type = 'chrome'
+	browser_type = 'chrome_headless'
 	try:
 		with io.StringIO() as buf, redirect_stdout(buf): #used to store output values
 			run_time('Instastart')
