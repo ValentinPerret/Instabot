@@ -176,7 +176,7 @@ def commenting_main_code(source_path,browser_type):
 
 if __name__ == "__main__":
 	source_path = os.path.dirname(os.path.realpath(__file__)) +'/source'
-	browser_type = 'chrome_headless'
+	browser_type = 'chrome'
 	try:
 		with io.StringIO() as buf, redirect_stdout(buf): #used to store output values
 			run_time('Instastart')
