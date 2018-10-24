@@ -21,11 +21,21 @@ import io
 from contextlib import redirect_stdout
 import sys, traceback
 from pathlib import Path
+import argparse
 
 class Actions(ActionChains):
     def wait(self, time_s: float):
         self._actions.append(lambda: time.sleep(time_s))
         return self
+
+def arguments_from_sys():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-d", "--display_mode", help="run code in display mode", action="store_true")
+	args = parser.parse_args()
+	if args.display_mode:
+		return args.display_mode
+	else:
+		return False
 
 def login(browser):
 	
@@ -105,26 +115,21 @@ def generate_message(source_path):
 	message = random.choice(messages)
 	return message.strip()
 
-def browser_object(source_path, browser_type = 'chrome_headless'):
-	if browser_type == 'chrome' or browser_type == 'chrome_headless':
-		chrome_options = Options() 
-		chromedriver = os.environ['CHROMEDRIVER_PATH']
-		chrome_options.binary_location = "{}".format(os.environ['CHROME_BINARY_PATH'])
-		if browser_type == 'chrome_headless':
-			chrome_options.add_argument("--headless")
+def browser_object(source_path, display_mode):
+	chrome_options = Options() 
+	chromedriver = os.environ['CHROMEDRIVER_PATH']
+	chrome_options.binary_location = "{}".format(os.environ['CHROME_BINARY_PATH'])
+	if display_mode == False:
+		chrome_options.add_argument("--headless")
 
-		chrome_options.add_argument('window-size=1200x600')
-		browser = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
-	
-	if browser_type == 'phantomjs':
-		browser = webdriver.PhantomJS(os.environ['PHANTOMJS_PATH'], service_log_path=os.path.devnull) #hide version
-		browser.set_window_size(1400,1000)
+	chrome_options.add_argument('window-size=1200x600')
+	browser = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
 
 	return browser
 
-def cookie_handling(browser, browser_type):
+def cookie_handling(browser, display_mode):
 	browser.get('https://www.instagram.com')
-	cookie_path = 'source/FbCookies_{}.pkl'.format(browser_type)
+	cookie_path = 'source/FbCookies_chrome.pkl'
 
 	if Path(cookie_path).is_file():
 		with open(cookie_path) as cookiefile:
@@ -153,9 +158,9 @@ def post_on_slack(message):
 	sc.api_call("chat.postMessage",channel = "instabot",text = message)
 	return True
 
-def commenting_main_code(source_path,browser_type):
-	browser = browser_object(source_path, browser_type)
-	print(cookie_handling(browser, browser_type))
+def commenting_main_code(source_path, display_mode):
+	browser = browser_object(source_path, display_mode)
+	print(cookie_handling(browser, display_mode))
 	try:
 		for i, profile in enumerate(getLines(source_path + '/profilelist.txt')):
 			wait()
@@ -176,14 +181,15 @@ def commenting_main_code(source_path,browser_type):
 
 if __name__ == "__main__":
 	source_path = os.path.dirname(os.path.realpath(__file__)) +'/source'
-	browser_type = 'chrome'
+	display_mode = arguments_from_sys()
 	try:
 		with io.StringIO() as buf, redirect_stdout(buf): #used to store output values
 			run_time('Instastart')
-			commenting_main_code(source_path, browser_type)
+			commenting_main_code(source_path, display_mode)
 			run_time('InstaEnd')
 			output = buf.getvalue() #Get values from stdr output
 		post_on_slack("```{}```".format(output)) #post output values on Slack
 	except Exception as e:
 		print(e)
 		post_on_slack('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
+	
