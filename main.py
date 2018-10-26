@@ -192,8 +192,14 @@ if __name__ == "__main__":
 			commenting_main_code(source_path, display_mode)
 			run_time('InstaEnd')
 			output = buf.getvalue() #Get values from stdr output
-		post_on_slack("```{}```".format(output)) #post output values on Slack
+		if 'SLACK_TOKEN' in os.environ:
+			post_on_slack("```{}```".format(output)) #post output values on Slack
+		else:
+			print(output)
 	except Exception as e:
 		print(e)
-		post_on_slack('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
+		if 'SLACK_TOKEN' in os.environ:
+			post_on_slack('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
+		else:
+			print('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
 	
