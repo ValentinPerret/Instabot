@@ -11,7 +11,7 @@ You can redirect the bot logs in Slack for easy monitoring (especially if you de
 
 ## Installation
 
-**Instabot** is developped to be run with `Python3.7`. You can find Python3.7 [here](https://www.python.org/downloads/release/python-371/).
+**Instabot** is developped on `Python3.7`. You can find Python3.7 [here](https://www.python.org/downloads/release/python-371/).
 To run the bot you also need google chrome installed on your computer and you need to find the installation path of the application (for example on mac it is ~/Applications/Google Chrome.app/Contents/MacOS/Google Chrome)
 You also need to download the Chromedriver used by python to remotely control chrome. You can find the latest version of Chromedriver [here](http://chromedriver.chromium.org/). You will also need the path to the chromedriver itself.
 
@@ -25,7 +25,7 @@ To install **Instabot**:
     - IG_PASSWORD --> Password of IG account
     - CHROME_BINARY_PATH --> Path retrieved after installing the chromium-browser
     - CHROMEDRIVER_PATH --> Path where the chromedriver was unpacked
-    - [OPTIONAL] SLACK_TOKEN --> Slack auth token (you will need to create a new app and give it write access to a slack cahnnel to get a token. See [here](https://api.slack.com/apps)) 
+    - [OPTIONAL] SLACK_TOKEN --> Slack auth token (you will need to create a new app and give it write access to a slack channel to get a token. See [here](https://api.slack.com/apps)) 
 - You need to add two text files in the folder `debug`:
     - profilelist.txt --> contain the profile handle of the people you want to comment on. (separate the handle with a new line. You can find the profile handle on the url of the IG web client. The profile names should look like that `[profile_name]/`)
     - insta_comment.txt --> contain the comments you want to post (you add more than one comment in new lines. The bot will randomly select a comment to post during each run)
@@ -43,6 +43,6 @@ To install **Instabot**:
 
 - Install python 3.7 ([tuto](http://www.ramoonus.nl/2018/06/30/installing-python-3-7-on-raspberry-pi/))
 - Install chromium ([tuto](https://tutorials-raspberrypi.com/google-chrome-for-raspberry-pi/))
-- Get chrome webdriver compiled for armh ([tuto1](https://www.raspberrypi.org/forums/viewtopic.php?t=194176) [tuto2](https://www.reddit.com/r/selenium/comments/7341wt/success_how_to_run_selenium_chrome_webdriver_on/)) and unpack the chromedriver somewhere. Save the path as CHROMEDRIVER_PATH.
-- `which chromium-browser` save the path as CHROME_BINARY_PATH.
+- Get chrome webdriver compiled for armh ([tuto1](https://www.raspberrypi.org/forums/viewtopic.php?t=194176) and [tuto2](https://www.reddit.com/r/selenium/comments/7341wt/success_how_to_run_selenium_chrome_webdriver_on/)) and unpack the chromedriver somewhere. Save the path as *CHROMEDRIVER_PATH*.
+- `which chromium-browser` save the path as *CHROME_BINARY_PATH*.
 - Then follow the standard installation process descibed above
