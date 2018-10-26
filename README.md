@@ -26,7 +26,7 @@ To install **Instabot**:
     - CHROME_BINARY_PATH --> Path retrieved after installing the chromium-browser
     - CHROMEDRIVER_PATH --> Path where the chromedriver was unpacked
     - [OPTIONAL] SLACK_TOKEN --> Slack auth token (you will need to create a new app and give it write access to a slack channel to get a token. See [here](https://api.slack.com/apps)) 
-- You need to add two text files in the folder `debug`:
+- You need to add two text files in the folder `source`:
     - profilelist.txt --> contain the profile handle of the people you want to comment on. (separate the handle with a new line. You can find the profile handle on the url of the IG web client. The profile names should look like that `[profile_name]/`)
     - insta_comment.txt --> contain the comments you want to post (you add more than one comment in new lines. The bot will randomly select a comment to post during each run)
 - Run `python main.py` --> run the code
