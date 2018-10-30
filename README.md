@@ -24,6 +24,7 @@ git clone
 ```
 
 - [Optional] I encourage you to use a python virtual env (see [here](https://docs.python-guide.org/dev/virtualenvs/#lower-level-virtualenv) for details on virtual env and [here](http://mkelsey.com/2013/04/30/how-i-setup-virtualenv-and-virtualenvwrapper-on-my-mac/) for details on virtualenvwrapper to handle env variables more easily). Activate your virtualenv
+
 - Install dependencies from requirements.txt
 
 ```bash
@@ -40,6 +41,7 @@ pip install -r requirements.txt
 - You need to add two text files in the folder `source`:
   - profilelist.txt --> contain the profile handle of the people you want to comment on. (separate the handle with a new line. You can find the profile handle on the url of the IG web client. The profile names should look like that `[profile_name]/`)
   - insta_comment.txt --> contain the comments you want to post (you add more than one comment in new lines. The bot will randomly select a comment to post during each run
+  
 - Run the code
 
 ```bash
