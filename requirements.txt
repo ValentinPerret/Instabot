@@ -1,12 +1,16 @@
 astroid==2.0.4
 certifi==2018.10.15
 chardet==3.0.4
+get==1.0.3
 idna==2.7
 isort==4.3.4
 lazy-object-proxy==1.3.1
 mccabe==0.6.1
+post==1.0.2
+public==2.0.1
 pylint==2.1.1
-requests==2.19.1
+query-string==1.0.2
+requests==2.20.0
 selenium==3.14.1
 six==1.11.0
 slackclient==1.3.0
