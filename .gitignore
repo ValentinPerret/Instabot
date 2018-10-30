@@ -4,6 +4,7 @@
 .env
 .DS_Store
 pi_instabot.sh
+instabot/*
 source/*
 !source/readme.md
 debug/*
