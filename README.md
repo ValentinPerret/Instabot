@@ -31,7 +31,7 @@ git clone
 pip install -r requirements.txt
 ```
 
-- Setup the following env variables (necessary to run the code. If using virtualenvwrapper a tuto is available [here](https://stackoverflow.com/questions/9554087/setting-an-environment-variable-in-virtualenv)):
+- Setup the following env variables necessary to run the code. You can also copy the file `.env.sample`, populate it and rename it `.env` (If using virtualenvwrapper a tuto is available [here](https://stackoverflow.com/questions/9554087/setting-an-environment-variable-in-virtualenv)):
   - IG_USERNAME --> Username of IG account
   - IG_PASSWORD --> Password of IG account
   - CHROME_BINARY_PATH --> Path retrieved after installing the chromium-browser
