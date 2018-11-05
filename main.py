@@ -75,8 +75,9 @@ def findLastPicture(browser, profileName):
 	profile_length = len(profileName.rstrip()[:-1]) + len(image_id)
 	elems = browser.find_elements_by_xpath("//a[@href]")
 	for elem in elems:
-		if elem.get_attribute("href")[-profile_length:] == '{}{}'.format(image_id, profileName.rstrip()[:-1]):
-			href = elem.get_attribute("href")
+		elem_href = elem.get_attribute("href")
+		if elem_href.find('/p/') >= 25:
+			href = elem_href
 			break
 		else:
 			continue
