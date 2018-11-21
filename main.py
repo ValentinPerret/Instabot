@@ -97,10 +97,12 @@ def commenting(browser, message = 'Lb'):
 	if len(comment_input) > 0:
 		comment_input[0].clear()
 		comment_input = get_comment_input(browser)
-		browser.execute_script("arguments[0].value = '" + message + " ';", comment_input[0])
-		comment_input[0].send_keys("\b")
-		comment_input = get_comment_input(browser)
-		comment_input[0].submit()
+		actions = ActionChains(browser)
+		actions.move_to_element(comment_input[0])
+		actions.click()
+		actions.send_keys(message)
+		actions.send_keys(Keys.ENTER)
+		actions.perform()
 	else:
 		print('Warning: Comment Action Likely Failed:Comment Element {} not found'.format(comment_input))
 	wait()
@@ -203,4 +205,3 @@ if __name__ == "__main__":
 			post_on_slack('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
 		else:
 			print('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
-	
