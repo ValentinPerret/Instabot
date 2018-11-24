@@ -97,10 +97,12 @@ def commenting(browser, message = 'Lb'):
 	if len(comment_input) > 0:
 		comment_input[0].clear()
 		comment_input = get_comment_input(browser)
-		browser.execute_script("arguments[0].value = '" + message + " ';", comment_input[0])
-		comment_input[0].send_keys("\b")
-		comment_input = get_comment_input(browser)
-		comment_input[0].submit()
+		actions = ActionChains(browser)
+		actions.move_to_element(comment_input[0])
+		actions.click()
+		actions.send_keys(message)
+		actions.send_keys(Keys.ENTER)
+		actions.perform()
 	else:
 		print('Warning: Comment Action Likely Failed:Comment Element {} not found'.format(comment_input))
 	wait()
@@ -123,7 +125,7 @@ def browser_object(source_path, display_mode):
 	chromedriver = os.environ['CHROMEDRIVER_PATH']
 	chrome_options = Options() 
 	chrome_options.binary_location = "{}".format(os.environ['CHROME_BINARY_PATH'])
-	chrome_options.add_argument(f'user-agent={user_agent}')
+	chrome_options.add_argument('user-agent={}'.format(user_agent))
 	chrome_options.add_argument('window-size=1200x600')
 	if display_mode == False:
 		chrome_options.add_argument("--headless")
@@ -175,7 +177,7 @@ def commenting_main_code(source_path, display_mode):
 			wait()
 			message = generate_message(source_path)
 			commenting(browser, message)
-			browser.save_screenshot(sys.path[0] + f'/debug/screen_comment_{i}.png')
+			browser.save_screenshot(sys.path[0] + '/debug/screen_comment_{}.png'.format(i))
 			wait()
 			print('commented {} on {} profile'.format(message, profile.strip()))
 		browser.quit()
@@ -203,4 +205,3 @@ if __name__ == "__main__":
 			post_on_slack('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
 		else:
 			print('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
-	
