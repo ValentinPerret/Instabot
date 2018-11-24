@@ -125,7 +125,7 @@ def browser_object(source_path, display_mode):
 	chromedriver = os.environ['CHROMEDRIVER_PATH']
 	chrome_options = Options() 
 	chrome_options.binary_location = "{}".format(os.environ['CHROME_BINARY_PATH'])
-	chrome_options.add_argument(f'user-agent={user_agent}')
+	chrome_options.add_argument('user-agent={}'.format(user_agent))
 	chrome_options.add_argument('window-size=1200x600')
 	if display_mode == False:
 		chrome_options.add_argument("--headless")
@@ -177,7 +177,7 @@ def commenting_main_code(source_path, display_mode):
 			wait()
 			message = generate_message(source_path)
 			commenting(browser, message)
-			browser.save_screenshot(sys.path[0] + f'/debug/screen_comment_{i}.png')
+			browser.save_screenshot(sys.path[0] + '/debug/screen_comment_{}.png'.format(i))
 			wait()
 			print('commented {} on {} profile'.format(message, profile.strip()))
 		browser.quit()
