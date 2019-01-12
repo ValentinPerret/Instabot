@@ -58,18 +58,19 @@ python main.py
 
 #### Instabot raspi setup
 
-- [Optional] Install python 3.7 ([tuto](http://www.ramoonus.nl/2018/06/30/installing-python-3-7-on-raspberry-pi/))
-- Install chromium ([tuto](https://tutorials-raspberrypi.com/google-chrome-for-raspberry-pi/))
+- [Optional] Install python 3.7 ([tuto](http://www.ramoonus.nl/2018/06/30/installing-python-3-7-on-raspberry-pi/)) The code was updated to work with Python 3.5 installed by defauklt on the latest version of rasbian stretch.
+- Install chromium ([tuto](https://tutorials-raspberrypi.com/google-chrome-for-raspberry-pi/)).
 
 ```bash
 sudo apt-get install chromium-browser
 ```
 
-- Get chrome webdriver compiled for armh ([tuto1](https://www.raspberrypi.org/forums/viewtopic.php?t=194176) and [tuto2](https://www.reddit.com/r/selenium/comments/7341wt/success_how_to_run_selenium_chrome_webdriver_on/))
+- Get chrome webdriver compiled for armh ([tuto1](https://www.raspberrypi.org/forums/viewtopic.php?t=194176) and [tuto2](https://www.reddit.com/r/selenium/comments/7341wt/success_how_to_run_selenium_chrome_webdriver_on/)).
 
 ```bash
 sudo apt-get install chromium-chromedriver
 ```
 
+- `dpkg --listfiles chromium-chromedriver` save the path as *CHROMEDRIVER_PATH*
 - `which chromium-browser` save the path as *CHROME_BINARY_PATH*.
 - Then follow the standard installation process descibed above
