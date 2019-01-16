@@ -164,14 +164,14 @@ def cookie_handling(browser,username , display_mode):
 			wait()
 			with open(cookie_path, 'w') as outfile:
 				json.dump(browser.get_cookies(), outfile)
-			return 'Cookie failed. Old school login'
+			return 'Cookie failed for {}. Old school login'.format(username)
 		except:
-			return 'Cookie Login'
+			return 'Cookie Login for {}'.format(username)
 	else:
 		login(browser)
 		with open(cookie_path, 'w') as outfile:
 			json.dump(browser.get_cookies(), outfile)
-		return 'Cannot find cookies. Old school login'
+		return 'Cannot find cookies for {}. Old school login'.format(username)
 
 def post_on_slack(message):
 	slack_token = os.environ['SLACK_TOKEN']
