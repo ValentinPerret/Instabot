@@ -23,6 +23,21 @@ from contextlib import redirect_stdout
 import sys, traceback
 from pathlib import Path
 import argparse
+import signal
+from contextlib import contextmanager
+
+class TimeoutException(Exception): pass
+
+@contextmanager
+def time_limit(seconds):
+    def signal_handler(signum, frame):
+        raise TimeoutException("Timed out!")
+    signal.signal(signal.SIGALRM, signal_handler)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
 
 class Actions(ActionChains):
     def wait(self, time_s: float):
@@ -133,9 +148,9 @@ def browser_object(source_path, display_mode):
 
 	return browser
 
-def cookie_handling(browser, display_mode):
+def cookie_handling(browser,username , display_mode):
 	browser.get('https://www.instagram.com')
-	cookie_path = 'source/FbCookies_chrome.pkl'
+	cookie_path = 'source/FbCookies_chrome_{}.pkl'.format(username)
 
 	if Path(cookie_path).is_file():
 		with open(cookie_path) as cookiefile:
@@ -166,7 +181,8 @@ def post_on_slack(message):
 
 def commenting_main_code(source_path, display_mode):
 	browser = browser_object(source_path, display_mode)
-	print(cookie_handling(browser, display_mode))
+	username = os.environ['IG_USERNAME']
+	print(cookie_handling(browser, username, display_mode))
 	try:
 		for i, profile in enumerate(getLines(source_path + '/profilelist.txt')):
 			wait()
@@ -187,21 +203,27 @@ def commenting_main_code(source_path, display_mode):
 		browser.quit()
 
 if __name__ == "__main__":
-	source_path = sys.path[0] +'/source'
-	display_mode = arguments_from_sys()
 	try:
-		with io.StringIO() as buf, redirect_stdout(buf): #used to store output values
-			run_time('Instastart')
-			commenting_main_code(source_path, display_mode)
-			run_time('InstaEnd')
-			output = buf.getvalue() #Get values from stdr output
-		if 'SLACK_TOKEN' in os.environ:
-			post_on_slack("```{}```".format(output)) #post output values on Slack
-		else:
-			print(output)
-	except Exception as e:
-		print(e)
-		if 'SLACK_TOKEN' in os.environ:
-			post_on_slack('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
-		else:
-			print('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
+		with time_limit(10*60):
+			source_path = sys.path[0] +'/source'
+			display_mode = arguments_from_sys()
+			try:
+				with io.StringIO() as buf, redirect_stdout(buf): #used to store output values
+					run_time('Instastart')
+					commenting_main_code(source_path, display_mode)
+					run_time('InstaEnd')
+					output = buf.getvalue() #Get values from stdr output
+				if 'SLACK_TOKEN' in os.environ:
+					post_on_slack("```{}```".format(output)) #post output values on Slack
+				else:
+					print(output)
+			except Exception as e:
+				print(e)
+				if 'SLACK_TOKEN' in os.environ:
+					post_on_slack('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
+				else:
+					print('Slack bot failed running with error: \n ```{}```'.format(traceback.format_exc()))
+
+	except TimeoutException as e:
+		print("Timed out!")
+	
