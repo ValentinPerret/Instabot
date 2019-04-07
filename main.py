@@ -202,15 +202,51 @@ def commenting_main_code(source_path, display_mode):
 		browser.save_screenshot(sys.path[0] + '/debug/runfail_screenshot.png')
 		browser.quit()
 
+def like_back_main_code(source_path, display_mode):
+	browser = browser_object(source_path, display_mode)
+	username = os.environ['IG_USERNAME']
+	print(cookie_handling(browser, username, display_mode))
+	try:
+		browser.get('https://www.instagram.com/accounts/activity/')
+		time.sleep(2)
+		friend_list = []
+		elems = browser.find_elements_by_class_name("FPmhX")
+		for elem in elems:
+			elem_href = elem.get_attribute("href")
+			if elem_href.find('https://www.instagram.com/') == 0 and elem_href.find('https://www.instagram.com/p/') == -1:
+				friend_list.append(elem_href[26:])
+		friend_list = list(set(friend_list))
+		print(friend_list)
+		for friend in friend_list:
+			goToProfiles(browser, friend)
+			time.sleep(2) 
+			try:
+				findLastPicture(browser, friend)
+				time.sleep(2) 
+				try:
+					browser.find_element_by_xpath('//button[@class="dCJp8 afkep coreSpriteHeartOpen _0mzm-"]/span[@aria-label="Like"]')
+					browser.find_element_by_class_name("coreSpriteHeartOpen").click()
+				except Exception as e:
+					print(e)
+			except Exception as e:
+				print(e)
+		browser.quit()
+	except Exception as e:
+		print(e)
+		browser.save_screenshot(sys.path[0] + '/debug/runfail_screenshot.png')
+		browser.quit()
+
 if __name__ == "__main__":
 	try:
 		with time_limit(10*60):
 			source_path = sys.path[0] +'/source'
 			display_mode = arguments_from_sys()
+			# like_back_main_code(source_path, display_mode)
 			try:
 				with io.StringIO() as buf, redirect_stdout(buf): #used to store output values
 					run_time('Instastart')
 					commenting_main_code(source_path, display_mode)
+					# like_back_main_code(source_path, display_mode)
 					run_time('InstaEnd')
 					output = buf.getvalue() #Get values from stdr output
 				if 'SLACK_TOKEN' in os.environ:
